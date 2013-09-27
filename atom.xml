@@ -4,7 +4,7 @@
   <title><![CDATA[ejohn]]></title>
   <link href="http://ejohn.github.io/atom.xml" rel="self"/>
   <link href="http://ejohn.github.io/"/>
-  <updated>2013-09-23T19:55:19-04:00</updated>
+  <updated>2013-09-27T17:23:27-04:00</updated>
   <id>http://ejohn.github.io/</id>
   <author>
     <name><![CDATA[ejohn]]></name>
@@ -124,7 +124,7 @@
     <link href="http://ejohn.github.io/blog/2013/09/23/csaw-exploitation-300/"/>
     <updated>2013-09-23T16:34:00-04:00</updated>
     <id>http://ejohn.github.io/blog/2013/09/23/csaw-exploitation-300</id>
-    <content type="html"><![CDATA[<p>The level 300 exploitation challenge involved an integer overflow. I figured out the username and password that were hardcoded in the binary. The program then asks for an integer input and uses that as the number of bytes to read parameter in recv(). The only input validation that is performed on this parameter is to check if it is less than 1024. Classic integer overflow vulnerability! Entering <code>-1</code> here lets us enter as much data we need since it gets interpreted as a positive integer. The next thing to notice is that the stack is executable.</p>
+    <content type="html"><![CDATA[<p>The level 300 exploitation challenge involved an integer overflow. I figured out the username and password that were hardcoded in the binary. The program then asks for an integer input and uses that as the number of bytes to read parameter in recv(). The only input validation that is performed on this parameter is to check if it is less than 1024. Entering <code>-1</code> here lets us enter as much data we need since it gets interpreted as a positive integer. The next thing to notice is that the stack is executable.</p>
 
 <h3>The plan of action</h3>
 
