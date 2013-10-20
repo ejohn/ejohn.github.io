@@ -85,6 +85,186 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/10/20/a-prime-number-which-is-also-a-valid-elf-binary/">A Prime Number Which Is Also a Valid ELF Binary!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T03:13:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So today I came across an interesting article on wikipedia about <a href="http://en.wikipedia.org/wiki/Illegal_prime">illegal primes</a>. Apparently there is a prime number which is also a valid ELF binary! Of course I had to make sure it checked out :)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">## Prime number copied from the wikipedia article</span>
+</span><span class='line'><span class="n">illegal_prime</span> <span class="o">=</span> <span class="s">&quot;49310 83597 02850 19002 75777 67239 07649 57284 90777 21502</span><span class="se">\</span>
+</span><span class='line'><span class="s">  08632 08075 01840 97926 27885 09765 88645 57802 01366 00732 86795 44734</span><span class="se">\</span>
+</span><span class='line'><span class="s">  11283 17353 67831 20155 75359 81978 54505 48115 71939 34587 73300 38009</span><span class="se">\</span>
+</span><span class='line'><span class="s">  93261 95058 76452 50238 20408 11018 98850 42615 17657 99417 04250 88903</span><span class="se">\</span>
+</span><span class='line'><span class="s">  70291 19015 87003 04794 32826 07382 14695 41570 33022 79875 57681 89560</span><span class="se">\</span>
+</span><span class='line'><span class="s">  16240 30064 11151 69008 72879 83819 42582 71674 56477 48166 84347 92846</span><span class="se">\</span>
+</span><span class='line'><span class="s">  45809 29131 53186 00700 10043 35318 93631 93439 12948 60445 03709 91980</span><span class="se">\</span>
+</span><span class='line'><span class="s">  04770 94629 21558 18071 11691 53031 87628 84778 78354 15759 32891 09329</span><span class="se">\</span>
+</span><span class='line'><span class="s">  54473 50881 88246 54950 60005 01900 62747 05305 38116 42782 94267 47485</span><span class="se">\</span>
+</span><span class='line'><span class="s">  34965 25745 36815 11706 55028 19055 52656 22135 31463 10421 00866 28679</span><span class="se">\</span>
+</span><span class='line'><span class="s">  71144 46706 36692 19825 86158 11125 15556 50481 34207 68673 23407 65505</span><span class="se">\</span>
+</span><span class='line'><span class="s">  48591 08269 56266 69306 62367 99702 10481 23965 62518 00681 83236 53959</span><span class="se">\</span>
+</span><span class='line'><span class="s">  34839 56753 57557 53246 19023 48106 47009 87753 02795 61868 92925 38069</span><span class="se">\</span>
+</span><span class='line'><span class="s">  33052 04238 14996 99454 56945 77413 83356 89906 00587 08321 81270 48611</span><span class="se">\</span>
+</span><span class='line'><span class="s">  33682 02651 59051 66351 87402 90181 97693 93767 78529 28722 10955 04129</span><span class="se">\</span>
+</span><span class='line'><span class="s">  25792 57381 86605 84501 50552 50274 99477 18831 29310 45769 80909 15304</span><span class="se">\</span>
+</span><span class='line'><span class="s">  61335 94190 30258 81320 59322 77444 38525 50466 77902 45186 97062 62778</span><span class="se">\</span>
+</span><span class='line'><span class="s">  88919 79580 42306 57506 15669 83469 56177 97879 65920 16440 51939 96071</span><span class="se">\</span>
+</span><span class='line'><span class="s">  69811 12615 19561 02762 83233 98257 91423 32172 69614 43744 38105 64855</span><span class="se">\</span>
+</span><span class='line'><span class="s">  29348 87634 92103 09887 02878 74532 33132 53212 26786 33283 70279 25099</span><span class="se">\</span>
+</span><span class='line'><span class="s">  74996 94887 75936 91591 76445 88032 71838 47402 35933 02037 48885 06755</span><span class="se">\</span>
+</span><span class='line'><span class="s">  70658 79194 61134 19323 07814 85443 64543 75113 20709 86063 90746 41756</span><span class="se">\</span>
+</span><span class='line'><span class="s">  41216 35042 38800 29678 08558 67037 03875 09410 76982 11837 65499 20520</span><span class="se">\</span>
+</span><span class='line'><span class="s">  43682 55854 64228 85024 29963 32268 53691 24648 55000 75591 66402 47292</span><span class="se">\</span>
+</span><span class='line'><span class="s">  40716 45072 53196 74499 95294 48434 74190 21077 29606 82055 81309 23626</span><span class="se">\</span>
+</span><span class='line'><span class="s">  83798 79519 66199 79828 55258 87161 09613 65617 80745 66159 24886 60889</span><span class="se">\</span>
+</span><span class='line'><span class="s">  81645 68541 72136 29208 46656 27913 14784 66791 55096 51543 10113 53858</span><span class="se">\</span>
+</span><span class='line'><span class="s">  62081 96875 83688 35955 77893 91454 53935 68199 60988 08540 47659 07358</span><span class="se">\</span>
+</span><span class='line'><span class="s">  97289 89834 25047 12891 84162 65878 96821 85380 87956 27903 99786 29449</span><span class="se">\</span>
+</span><span class='line'><span class="s">  39760 54675 34821 25675 01215 17082 73710 76462 70712 46753 21024 83678</span><span class="se">\</span>
+</span><span class='line'><span class="s">  15940 00875 05452 54353 7&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">illegal_prime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">illegal_prime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span><span class="c">## Parse string as int</span>
+</span><span class='line'><span class="n">illegal_prime</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">illegal_prime</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;0x&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">)</span> <span class="c">## String representation of hex</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">binascii</span>
+</span><span class='line'><span class="n">illegal_prime</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">illegal_prime</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;valid_elf&#39;</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">illegal_prime</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Running the file command on the output file shows that it is a valid ELF executable. The wikipedia description indicates that this program decrypts CSS-encrypted data. Pretty impressive for a prime number!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">ejohn</span><span class="nd">@sunstar</span> <span class="o">~/</span><span class="n">code</span><span class="o">/</span><span class="n">exps</span> <span class="err">$</span> <span class="nb">file</span> <span class="n">valid_elf</span>
+</span><span class='line'><span class="n">valid_elf</span><span class="p">:</span> <span class="n">ELF</span> <span class="mi">32</span><span class="o">-</span><span class="n">bit</span> <span class="n">LSB</span> <span class="n">executable</span><span class="p">,</span> <span class="n">Intel</span> <span class="mi">80386</span><span class="p">,</span> <span class="n">version</span> <span class="mi">1</span> <span class="p">(</span><span class="n">SYSV</span><span class="p">),</span> <span class="n">statically</span> <span class="n">linked</span><span class="p">,</span> <span class="n">corrupted</span> <span class="n">section</span> <span class="n">header</span> <span class="n">size</span>
+</span><span class='line'><span class="n">ejohn</span><span class="nd">@sunstar</span> <span class="o">~/</span><span class="n">code</span><span class="o">/</span><span class="n">exps</span> <span class="err">$</span> <span class="n">readelf</span> <span class="o">-</span><span class="n">h</span> <span class="o">./</span><span class="n">valid_elf</span>
+</span><span class='line'><span class="n">ELF</span> <span class="n">Header</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">Magic</span><span class="p">:</span>   <span class="mi">7</span><span class="n">f</span> <span class="mi">45</span> <span class="mi">4</span><span class="n">c</span> <span class="mi">46</span> <span class="mo">01</span> <span class="mo">01</span> <span class="mo">01</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>
+</span><span class='line'>  <span class="n">Class</span><span class="p">:</span>                             <span class="n">ELF32</span>
+</span><span class='line'>  <span class="n">Data</span><span class="p">:</span>                              <span class="mi">2</span><span class="s">&#39;s complement, little endian</span>
+</span><span class='line'>  <span class="n">Version</span><span class="p">:</span>                           <span class="mi">1</span> <span class="p">(</span><span class="n">current</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">OS</span><span class="o">/</span><span class="n">ABI</span><span class="p">:</span>                            <span class="n">UNIX</span> <span class="o">-</span> <span class="n">System</span> <span class="n">V</span>
+</span><span class='line'>  <span class="n">ABI</span> <span class="n">Version</span><span class="p">:</span>                       <span class="mi">0</span>
+</span><span class='line'>  <span class="n">Type</span><span class="p">:</span>                              <span class="n">EXEC</span> <span class="p">(</span><span class="n">Executable</span> <span class="nb">file</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">Machine</span><span class="p">:</span>                           <span class="n">Intel</span> <span class="mi">80386</span>
+</span><span class='line'>  <span class="n">Version</span><span class="p">:</span>                           <span class="mh">0x1</span>
+</span><span class='line'>  <span class="n">Entry</span> <span class="n">point</span> <span class="n">address</span><span class="p">:</span>               <span class="mh">0x80480c8</span>
+</span><span class='line'>  <span class="n">Start</span> <span class="n">of</span> <span class="n">program</span> <span class="n">headers</span><span class="p">:</span>          <span class="mi">52</span> <span class="p">(</span><span class="nb">bytes</span> <span class="n">into</span> <span class="nb">file</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">Start</span> <span class="n">of</span> <span class="n">section</span> <span class="n">headers</span><span class="p">:</span>          <span class="mi">0</span> <span class="p">(</span><span class="nb">bytes</span> <span class="n">into</span> <span class="nb">file</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">Flags</span><span class="p">:</span>                             <span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">Size</span> <span class="n">of</span> <span class="n">this</span> <span class="n">header</span><span class="p">:</span>               <span class="mi">52</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">Size</span> <span class="n">of</span> <span class="n">program</span> <span class="n">headers</span><span class="p">:</span>           <span class="mi">32</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">Number</span> <span class="n">of</span> <span class="n">program</span> <span class="n">headers</span><span class="p">:</span>         <span class="mi">2</span>
+</span><span class='line'>  <span class="n">Size</span> <span class="n">of</span> <span class="n">section</span> <span class="n">headers</span><span class="p">:</span>           <span class="mi">0</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">Number</span> <span class="n">of</span> <span class="n">section</span> <span class="n">headers</span><span class="p">:</span>         <span class="mi">0</span>
+</span><span class='line'>  <span class="n">Section</span> <span class="n">header</span> <span class="n">string</span> <span class="n">table</span> <span class="n">index</span><span class="p">:</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So there you have it. A valid ELF executable.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/09/23/csaw-2013-exploitation-200/">CSAW 2013: Exploitation 200</a></h1>
     
     
@@ -372,6 +552,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/20/a-prime-number-which-is-also-a-valid-elf-binary/">A Prime Number Which Is Also a Valid ELF Binary!</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/09/23/csaw-2013-exploitation-200/">CSAW 2013: Exploitation 200</a>
