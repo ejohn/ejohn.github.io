@@ -92,7 +92,7 @@
 <p>Let’s break this down. Suppose the value of the <code>247</code> cookie is <code>foo.bar</code>. The <code>explode</code>  extracts the second part <code>bar</code> after splitting on <code>.</code>. <code>bar</code> is then concatenated with a random value between  <code>0</code> and <code>247247247</code> . This value is then checked to see if it is <code>==</code> to <code>0</code>.</p>
 <p>At first glance this looks impossible! How can a <code>string + random number</code> be equal to <code>0</code>!
 <img src="images/C3EC44C3-C50C-42ED-B6EA-8288C08480FB%202.png" alt=""></p>
-<p>I don’t have a PHP dev environment handy but let’s use one of them online IDE’s! I am new to PHP but not new to weirdness involving equality operators! Let’s investigate if that is the case. My google-fu quickly got me to <a href="https://stackoverflow.com/questions/3333353/string-comparison-using-vs-strcmp">this</a> stack overflow answer.</p>
+<p>I don’t have a PHP dev environment handy so let’s use an online IDE. I am new to PHP but not new to weirdness involving equality operators! Let’s investigate if that is the case. My google-fu quickly got me to <a href="https://stackoverflow.com/questions/3333353/string-comparison-using-vs-strcmp">this</a> stack overflow answer.</p>
 <p><img src="images/F65272D6-B287-4734-A88A-B0A9CA8DA2E6%202.png" alt=""></p>
 <p>Boom! This is exactly what we want! Let’s test out this theory.</p>
 <p><img src="images/980C352C-71AC-4C1F-9B9B-C111E77DCB16%202.png" alt=""></p>
