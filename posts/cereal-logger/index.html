@@ -137,7 +137,7 @@ followed by base64 encoding it.</p>
 <p>At this stage we have everything we need to exploit the SQL injection and extract information. The only caveat is that since this is a blind time based attack, we can only extract one character at a time. See <a href="https://owasp.org/www-community/attacks/Blind_SQL_Injection">here</a> for more information on blind sql injection and its limitations. Doing this by hand is extremely time consuming so we need to automate it. There are many tools like <a href="http://sqlmap.org/">sqlmap</a> designed specifically to do this. However the payloads that sqlmap generates will need to undergo some transformation before it can be used to attack the server.</p>
 <p>This shows the transformations needed in order to pull this off.</p>
 <pre><code>sqlmap payload -&gt; php serialize -&gt; base64 encode -&gt; construct cookie -&gt; http request
-</code></pre><p>sqlmap has an option called <code>-—tamper</code> to specificy a python script to transform the payload before being sent to the server.</p>
+</code></pre><p>sqlmap has an option called <code>-—tamper</code> to specify a python script to transform the payload before being sent to the server.</p>
 <p>An example of a tamper script we need might look like this. Look at the other tamper scripts supplied with sqlmap for a better idea.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">tamper</span>(payload, <span style="color:#f92672">**</span>kwargs):
     retVal <span style="color:#f92672">=</span> payload
