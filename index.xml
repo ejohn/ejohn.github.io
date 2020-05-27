@@ -17,7 +17,8 @@
       <pubDate>Wed, 27 May 2020 13:34:18 -0700</pubDate>
       
       <guid>https://ejohn.github.io/posts/cereal-logger/</guid>
-      <description>I recently came across this challenge on twitter. Write to /dev/null using a special cookie to read a flag! That intrigued me enough to sign up on 247ctf.com and take a crack at it myself.
+      <description>I recently came across this challenge on twitter.
+Write to /dev/null using a special cookie to read a flag! That intrigued me enough to sign up on 247ctf.com and take a crack at it myself.
 This is what the challenge looks like once you start playing.
 The code starts with an insert_log class which does some really questionable things but let’s come back to that later. The if statements are where the fun begins.</description>
     </item>
