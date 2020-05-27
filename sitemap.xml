@@ -3,11 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://ejohn.github.io/categories/</loc>
+    <loc>https://ejohn.github.io/posts/cereal-logger/</loc>
+    <lastmod>2020-05-27T13:34:18-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ejohn.github.io/posts/</loc>
+    <lastmod>2020-05-27T13:34:18-07:00</lastmod>
   </url>
   
   <url>
     <loc>https://ejohn.github.io/</loc>
+    <lastmod>2020-05-27T13:34:18-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ejohn.github.io/categories/</loc>
   </url>
   
   <url>

