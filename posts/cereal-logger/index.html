@@ -106,7 +106,7 @@ if (!doNotTrack) {
 <p>I don’t have a PHP dev environment handy so let’s use an online IDE. I am new to PHP but not new to weirdness involving equality operators! Let’s investigate if that is the case. My google-fu quickly got me to <a href="https://stackoverflow.com/questions/3333353/string-comparison-using-vs-strcmp">this</a> stack overflow answer.</p>
 <p><img src="images/F65272D6-B287-4734-A88A-B0A9CA8DA2E6%202.png" alt=""></p>
 <p>Boom! This is exactly what we want! Let’s test out this theory.</p>
-<p><img src="images/980C352C-71AC-4C1F-9B9B-C111E77DCB16%202.png" alt=""></p>
+<p><img src="images/php-typeconfusion.png" alt=""></p>
 <p>Let me unpack what’s going on here.  According to the stack overflow answer, php tries to convert strings that start with an exponent notation to a float when the <code>==</code> operator is used.  Since we want the conversion to result in a <code>0</code> we start the string with <code>0e</code>. What follows <code>0e</code> does not matter since <code>0</code> multiplied by any other number is still <code>0</code>. See <a href="https://www.nyu.edu/pages/mathmol/textbook/scinot.html">this</a> for more information on scientific exponent notation.</p>
 <p>So now we have a way to satisfy the first check. Let’s test it out against the challenge site</p>
 <p><img src="images/3BAD5CF8-2184-46D5-8B7F-E9ABA90B04B8%202.png" alt=""></p>
