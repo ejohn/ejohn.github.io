@@ -17,10 +17,36 @@
       <pubDate>Wed, 27 May 2020 13:34:18 -0700</pubDate>
       
       <guid>https://ejohn.github.io/posts/cereal-logger/</guid>
-      <description>I recently came across this challenge on twitter.
-Write to /dev/null using a special cookie to read a flag! That intrigued me enough to sign up on 247ctf.com and take a crack at it myself.
-This is what the challenge looks like once you start playing.
-The code starts with an insert_log class which does some really questionable things but let’s come back to that later. The if statements are where the fun begins.</description>
+      <description>I recently came across this challenge on twitter. Write to /dev/null using a special cookie to read a flag! That intrigued me enough to sign up on 247ctf.com and take a crack at it myself.
+This is what the challenge looks like once you start playing. The code starts with an insert_log class which does some really questionable things but let’s come back to that later. The if statements are where the fun begins.</description>
+    </item>
+    
+    <item>
+      <title>Prime ELF</title>
+      <link>https://ejohn.github.io/posts/prime-elf/</link>
+      <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://ejohn.github.io/posts/prime-elf/</guid>
+      <description>So today I came across an interesting article on wikipedia about illegal primes. Apparently there is a prime number which is also a valid ELF binary! Of course I had to make sure it checked out :)
+## Prime number copied from the wikipedia article illegal_prime = &amp;#34;49310 83597 02850 19002 75777 67239 07649 57284 90777 21502\ 08632 08075 01840 97926 27885 09765 88645 57802 01366 00732 86795 44734\ 11283 17353 67831 20155 75359 81978 54505 48115 71939 34587 73300 38009\ 93261 95058 76452 50238 20408 11018 98850 42615 17657 99417 04250 88903\ 70291 19015 87003 04794 32826 07382 14695 41570 33022 79875 57681 89560\ 16240 30064 11151 69008 72879 83819 42582 71674 56477 48166 84347 92846\ 45809 29131 53186 00700 10043 35318 93631 93439 12948 60445 03709 91980\ 04770 94629 21558 18071 11691 53031 87628 84778 78354 15759 32891 09329\ 54473 50881 88246 54950 60005 01900 62747 05305 38116 42782 94267 47485\ 34965 25745 36815 11706 55028 19055 52656 22135 31463 10421 00866 28679\ 71144 46706 36692 19825 86158 11125 15556 50481 34207 68673 23407 65505\ 48591 08269 56266 69306 62367 99702 10481 23965 62518 00681 83236 53959\ 34839 56753 57557 53246 19023 48106 47009 87753 02795 61868 92925 38069\ 33052 04238 14996 99454 56945 77413 83356 89906 00587 08321 81270 48611\ 33682 02651 59051 66351 87402 90181 97693 93767 78529 28722 10955 04129\ 25792 57381 86605 84501 50552 50274 99477 18831 29310 45769 80909 15304\ 61335 94190 30258 81320 59322 77444 38525 50466 77902 45186 97062 62778\ 88919 79580 42306 57506 15669 83469 56177 97879 65920 16440 51939 96071\ 69811 12615 19561 02762 83233 98257 91423 32172 69614 43744 38105 64855\ 29348 87634 92103 09887 02878 74532 33132 53212 26786 33283 70279 25099\ 74996 94887 75936 91591 76445 88032 71838 47402 35933 02037 48885 06755\ 70658 79194 61134 19323 07814 85443 64543 75113 20709 86063 90746 41756\ 41216 35042 38800 29678 08558 67037 03875 09410 76982 11837 65499 20520\ 43682 55854 64228 85024 29963 32268 53691 24648 55000 75591 66402 47292\ 40716 45072 53196 74499 95294 48434 74190 21077 29606 82055 81309 23626\ 83798 79519 66199 79828 55258 87161 09613 65617 80745 66159 24886 60889\ 81645 68541 72136 29208 46656 27913 14784 66791 55096 51543 10113 53858\ 62081 96875 83688 35955 77893 91454 53935 68199 60988 08540 47659 07358\ 97289 89834 25047 12891 84162 65878 96821 85380 87956 27903 99786 29449\ 39760 54675 34821 25675 01215 17082 73710 76462 70712 46753 21024 83678\ 15940 00875 05452 54353 7&amp;#34; illegal_prime = int(illegal_prime.</description>
+    </item>
+    
+    <item>
+      <title>CSAW Exploitation 200 [2013]</title>
+      <link>https://ejohn.github.io/posts/csaw-2013-exploitation-200/</link>
+      <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://ejohn.github.io/posts/csaw-2013-exploitation-200/</guid>
+      <description>This level 200 challenge has a very obvious buffer overflow vulnerability but with a little twist, the devious geniuses at ISIS labs implemented their own custom stack canary buffer overflow protection! Well given that it is a 200 level challenge they made things a lot easier by sending us the canary value used and the address of the buffer on the stack. With these two values in hand its a straight forward buffer overflow exploit.</description>
+    </item>
+    
+    <item>
+      <title>CSAW Exploitation 300 [2013]</title>
+      <link>https://ejohn.github.io/posts/csaw-2013-exploitation-300/</link>
+      <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://ejohn.github.io/posts/csaw-2013-exploitation-300/</guid>
+      <description>The level 300 exploitation challenge involved an integer overflow. I figured out the username and password that were hardcoded in the binary. The program then asks for an integer input and uses that as the number of bytes to read parameter in recv(). The only input validation that is performed on this parameter is to check if it is less than 1024. Entering -1 here lets us enter as much data we need since it gets interpreted as a positive integer.</description>
     </item>
     
   </channel>

